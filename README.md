@@ -23,5 +23,14 @@ jetpack compose and foundations in firebase .
   - compose navigation
   - compose ; stateflow, sharedflow, and livedata 
   - firebase; realtime database, analytics, crashlytics
+
+
+# As an add on, I recently discovered this tool called [Emerge](https://www.emergetools.com/) from spotify developers blog
+its tool used by devs from companies like openAI and my best **Spotify** 
+- Some of the feature I want to be using from this app include.
+  - Performance analysis.
+  - Size analysis
+  - Launcher Booster
+  
   
 ## Lets rock on, only few days till we get a job.

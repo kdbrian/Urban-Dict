@@ -1,5 +1,7 @@
 package io.kdbrian.urbandict.features
 
+import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -9,6 +11,8 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.rounded.ArrowBack
 import androidx.compose.material3.BadgedBox
 import androidx.compose.material3.Button
 import androidx.compose.material3.HorizontalDivider
@@ -24,6 +28,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
@@ -39,7 +44,12 @@ import io.kdbrian.urbandict.ui.theme.telma
 import io.kdbrian.urbandict.util.Shapes
 
 @Composable
-fun AuthScreen(modifier: Modifier = Modifier) {
+fun AuthScreen(
+    modifier: Modifier = Modifier,
+    onClose: () -> Unit = {},
+    onAuth: (email: String, password: String) -> Unit = { _, _ -> },
+    onPasswordLess: () -> Unit = {}
+) {
 
     val (email, setEmail) = remember { mutableStateOf("") }
     val (password, setPassword) = remember { mutableStateOf("") }
@@ -52,15 +62,22 @@ fun AuthScreen(modifier: Modifier = Modifier) {
     }
 
     Box(
-        modifier = modifier.fillMaxSize(),
+        modifier = modifier
+            .fillMaxSize()
+            .background(color = Color(0xFFF5E9E2)),
         contentAlignment = Alignment.Center
     ) {
 
         Column(modifier = Modifier.fillMaxWidth()) {
 
+            IconButton(onClick = onClose) {
+                Icon(imageVector = Icons.AutoMirrored.Rounded.ArrowBack, contentDescription = null)
+            }
+
             BorderedRowWithIcon(
                 icon = R.drawable.google_logo,
-                title = "Sign In With Google"
+                title = "Sign In With Google",
+                modifier = Modifier.clickable { onPasswordLess() }
             )
 
             Spacer(Modifier.height(12.dp))
@@ -135,7 +152,9 @@ fun AuthScreen(modifier: Modifier = Modifier) {
             Spacer(Modifier.height(12.dp))
 
             Button(
-                onClick = {},
+                onClick = {
+                    onAuth(email, password)
+                },
                 shape = Shapes.rounded12Dp,
                 modifier = Modifier
                     .fillMaxWidth()

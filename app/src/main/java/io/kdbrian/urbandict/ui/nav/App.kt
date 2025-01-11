@@ -6,6 +6,8 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.toRoute
+import io.kdbrian.urbandict.features.auth.AuthEvent
+import io.kdbrian.urbandict.features.onboarding.OnBoardingScreen
 
 @Composable
 fun App(
@@ -21,6 +23,35 @@ fun App(
     ) {
 
         composable<Route.OnBoarding> {
+            OnBoardingScreen(
+                onAuthEvent = { auth ->
+                    when (auth) {
+
+                        AuthEvent.GetStarted -> {
+                            navController.navigate(Route.Home)
+                        }
+
+                        is AuthEvent.SignIn -> {
+                            //get fields sign in
+
+                        }
+
+                        AuthEvent.SignOut -> {
+
+                            //clear login info
+                        }
+
+                        is AuthEvent.SignUp -> {
+                            //get fields sign up
+
+                        }
+
+                        AuthEvent.PasswordLess -> {
+                            //perform password less -> move to home
+                        }
+                    }
+                }
+            )
         }
 
         composable<Route.Home> { }

@@ -20,15 +20,12 @@ fun WordFeed(
     footer: @Composable (Modifier) -> Unit = {}
 ) {
 
-    Scaffold(
-        topBar = { banner(Modifier) },
-    ) { paddingValues ->
         Column(
             modifier = modifier
-                .padding(paddingValues)
                 .fillMaxSize(),
             verticalArrangement = Arrangement.SpaceEvenly
         ) {
+            banner(Modifier)
             Box(
                 Modifier
                     .weight(1f)
@@ -39,6 +36,4 @@ fun WordFeed(
                 footer(Modifier.align(Alignment.BottomCenter))
             }
         }
-    }
-
 }

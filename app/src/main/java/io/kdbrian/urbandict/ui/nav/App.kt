@@ -11,7 +11,7 @@ import io.kdbrian.urbandict.data.model.DemoWordDao
 import io.kdbrian.urbandict.features.auth.AuthEvent
 import io.kdbrian.urbandict.features.onboarding.OnBoardingScreen
 import io.kdbrian.urbandict.features.words.FullScreenWord
-import io.kdbrian.urbandict.features.words.SwippableWordFeed
+import io.kdbrian.urbandict.features.words.GridWordFeed
 
 @Composable
 fun App(
@@ -60,7 +60,7 @@ fun App(
         }
 
         composable<Route.Home> {
-            SwippableWordFeed(words = words)
+            GridWordFeed(words = words)
         }
 
         composable<Route.ViewWord> { backStackEntry ->

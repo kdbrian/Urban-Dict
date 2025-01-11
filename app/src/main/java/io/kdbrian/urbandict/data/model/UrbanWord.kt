@@ -14,3 +14,15 @@ data class UrbanWord(
     val usedBy: List<String> = emptyList(),
     val banned: Boolean = false
 )
+
+object DemoWordDao {
+    fun getWords(): List<UrbanWord> {
+        return listOf(
+            UrbanWord(),
+            UrbanWord(),
+            UrbanWord(),
+            UrbanWord(),
+            UrbanWord(),
+        )
+    }
+}

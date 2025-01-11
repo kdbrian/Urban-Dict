@@ -25,31 +25,22 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import io.kdbrian.urbandict.LocalBackgroundColor
 import io.kdbrian.urbandict.data.model.UrbanWord
 import io.kdbrian.urbandict.ui.composables.WordCard
 import io.kdbrian.urbandict.ui.theme.UrbanDictTheme
-import io.kdbrian.urbandict.ui.theme.indianRed
 import kotlin.random.Random
 
 @Composable
-fun SwippableWordFeed(
-    modifier: Modifier = Modifier
+fun GridWordFeed(
+    modifier: Modifier = Modifier,
+    words: List<UrbanWord>
 ) {
 
-    val words = listOf(
-        UrbanWord(),
-        UrbanWord(),
-        UrbanWord(),
-        UrbanWord(),
-        UrbanWord(),
-        UrbanWord(),
-    )
-
-
     WordFeed(
-        modifier = modifier.background(color = indianRed),
+        modifier = modifier.background(color = LocalBackgroundColor.current),
         banner = {
-            WelcomeBanner(modifier = it, backgroundColor = indianRed)
+            WelcomeBanner(modifier = it, backgroundColor = LocalBackgroundColor.current)
         },
         body = {
             LazyVerticalGrid(columns = GridCells.Fixed(2)) {
@@ -123,8 +114,7 @@ private fun DividerWithTextInMiddle(
 
 @Preview
 @Composable
-fun SwippableWordFeedPrev(modifier: Modifier = Modifier) {
+fun GridWordFeedPrev(modifier: Modifier = Modifier) {
     UrbanDictTheme {
-        SwippableWordFeed()
     }
 }

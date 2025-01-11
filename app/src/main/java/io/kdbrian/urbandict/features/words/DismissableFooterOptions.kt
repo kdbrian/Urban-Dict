@@ -32,10 +32,10 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.datasource.LoremIpsum
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import io.kdbrian.urbandict.LocalBackgroundColor
 import io.kdbrian.urbandict.ui.theme.UrbanDictTheme
 import io.kdbrian.urbandict.ui.theme.coral
 import io.kdbrian.urbandict.ui.theme.gambarino
-import io.kdbrian.urbandict.ui.theme.peachYellow
 import io.kdbrian.urbandict.ui.theme.telma
 
 @Composable
@@ -54,7 +54,7 @@ fun DismissableFooterOptions(
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(300.dp)
-                    .background(color = Color.LightGray, shape = RoundedCornerShape(12.dp))
+                    .background(color = LocalBackgroundColor.current, shape = RoundedCornerShape(12.dp))
                     .padding(6.dp),
                 verticalArrangement = Arrangement.Center,
                 horizontalAlignment = Alignment.CenterHorizontally
@@ -72,7 +72,7 @@ fun DismissableFooterOptions(
                 onClick = onExpandAction,
                 modifier = Modifier
                     .align(Alignment.CenterHorizontally)
-                    .background(shape = CircleShape, color = Color.LightGray)
+                    .background(shape = CircleShape, color = LocalBackgroundColor.current)
             ) {
                 Icon(imageVector = Icons.Rounded.Clear, contentDescription = null)
             }
@@ -85,7 +85,7 @@ fun DismissableFooterOptions(
                 Row(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .background(color = peachYellow, shape = RoundedCornerShape(12.dp))
+                        .background(color = LocalBackgroundColor.current, shape = RoundedCornerShape(12.dp))
                         .padding(12.dp),
                     horizontalArrangement = Arrangement.SpaceBetween,
                     verticalAlignment = Alignment.CenterVertically

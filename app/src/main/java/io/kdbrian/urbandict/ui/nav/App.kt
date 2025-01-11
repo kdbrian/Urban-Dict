@@ -1,13 +1,17 @@
 package io.kdbrian.urbandict.ui.nav
 
+import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.toRoute
+import io.kdbrian.urbandict.data.model.DemoWordDao
 import io.kdbrian.urbandict.features.auth.AuthEvent
 import io.kdbrian.urbandict.features.onboarding.OnBoardingScreen
+import io.kdbrian.urbandict.features.words.FullScreenWord
+import io.kdbrian.urbandict.features.words.SwippableWordFeed
 
 @Composable
 fun App(
@@ -15,9 +19,10 @@ fun App(
 ) {
 
     val navController = rememberNavController()
+    val words = DemoWordDao.getWords()
 
     NavHost(
-        modifier = modifier,
+        modifier = modifier.systemBarsPadding(),
         navController = navController,
         startDestination = Route.OnBoarding
     ) {
@@ -54,10 +59,20 @@ fun App(
             )
         }
 
-        composable<Route.Home> { }
+        composable<Route.Home> {
+            SwippableWordFeed(words = words)
+        }
 
         composable<Route.ViewWord> { backStackEntry ->
             val wordId = backStackEntry.toRoute<Route.ViewWord>()
+            val word = words.find { it.wordId == wordId.wordId }
+            //load words and related data
+            if (word != null) {
+                FullScreenWord(
+                    word = word,
+                    similarWordsInCriteria = listOf(),
+                )
+            }
         }
 
         composable<Route.Account> { backStackEntry ->

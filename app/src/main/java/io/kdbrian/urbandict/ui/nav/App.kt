@@ -13,6 +13,7 @@ import io.kdbrian.urbandict.features.auth.AuthEvent
 import io.kdbrian.urbandict.features.onboarding.OnBoardingScreen
 import io.kdbrian.urbandict.features.words.FullScreenWord
 import io.kdbrian.urbandict.features.words.GridWordFeed
+import io.kdbrian.urbandict.features.words.MySaves
 import java.util.UUID
 
 @Composable
@@ -101,14 +102,16 @@ fun App(
 
         composable<Route.Account> { backStackEntry ->
             val userId = backStackEntry.toRoute<Route.Account>()
+            MyProfile(userId)
         }
 
         composable<Route.Saves> { _->
-            GridWordFeed(
-                words = savedWords,
+            MySaves(
+                saves = savedWords,
                 onOpenWord = { viewWord(it.wordId) },
-                onOpenProfile = openProfile,
-                onOpenSaves = openSaves
+                onClose = { navController.popBackStack() },
+                onToggleSaved = onSaveWord,
+                onClearSaved = { DemoWordDao.clearSavedWords() }
             )
         }
 

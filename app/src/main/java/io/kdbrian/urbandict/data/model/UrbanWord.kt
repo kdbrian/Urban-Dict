@@ -36,4 +36,8 @@ object DemoWordDao {
             savedWords.add(word)
     }
 
+    fun clearSavedWords() {
+        savedWords.clear()
+    }
+
 }

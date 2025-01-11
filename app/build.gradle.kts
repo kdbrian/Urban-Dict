@@ -74,5 +74,8 @@ dependencies {
     //extended icons
     implementation(libs.material.icons.extended)
 
+    //runtime livedata
+    implementation(libs.androidx.runtime.livedata)
+
 
 }

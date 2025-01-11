@@ -37,7 +37,7 @@ import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import io.kdbrian.urbandict.R
-import io.kdbrian.urbandict.ui.composables.BorderedRowWithIcon
+import io.kdbrian.urbandict.features.composables.BorderedRowWithIcon
 import io.kdbrian.urbandict.ui.theme.UrbanDictTheme
 import io.kdbrian.urbandict.ui.theme.gambarino
 import io.kdbrian.urbandict.ui.theme.telma

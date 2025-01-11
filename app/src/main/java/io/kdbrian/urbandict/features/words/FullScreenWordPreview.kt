@@ -16,8 +16,10 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.rounded.ArrowBack
+import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.ThumbDown
 import androidx.compose.material.icons.filled.ThumbUp
+import androidx.compose.material.icons.outlined.FavoriteBorder
 import androidx.compose.material.icons.outlined.ThumbDown
 import androidx.compose.material.icons.outlined.ThumbUp
 import androidx.compose.material.icons.rounded.Share
@@ -37,8 +39,9 @@ import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import io.kdbrian.urbandict.LocalBackgroundColor
 import io.kdbrian.urbandict.data.model.UrbanWord
-import io.kdbrian.urbandict.ui.composables.WordCard
+import io.kdbrian.urbandict.features.composables.WordCard
 import io.kdbrian.urbandict.ui.theme.UrbanDictTheme
 import io.kdbrian.urbandict.ui.theme.gambarino
 import io.kdbrian.urbandict.ui.theme.indianRed
@@ -50,7 +53,9 @@ fun FullScreenWord(
     modifier: Modifier = Modifier,
     word: UrbanWord,
     similarWordsInCriteria: List<UrbanWord>,
-    onClose: () -> Unit = {}
+    onClose: () -> Unit = {},
+    isSaved: Boolean,
+    onSave: (UrbanWord) -> Unit = {}
 ){
 
     val verticalScrollState = rememberScrollState()
@@ -61,17 +66,28 @@ fun FullScreenWord(
     Column(
         modifier = modifier
             .fillMaxSize()
-            .background(color = peachYellow)
+            .background(color = LocalBackgroundColor.current)
             .padding(12.dp)
             .verticalScroll(verticalScrollState),
         verticalArrangement = Arrangement.spacedBy(6.dp)
     ) {
 
-        IconButton(
-            onClick = onClose,
-            modifier = Modifier
-        ) {
-            Icon(imageVector = Icons.AutoMirrored.Rounded.ArrowBack, contentDescription = null)
+        Row {
+            IconButton(
+                onClick = onClose,
+                modifier = Modifier.weight(1f)
+            ) {
+                Icon(imageVector = Icons.AutoMirrored.Rounded.ArrowBack, contentDescription = null)
+            }
+
+            val favIcon = if (isSaved) Icons.Filled.Favorite else Icons.Filled.Favorite
+
+            IconButton(
+                onClick = { onSave(word) },
+                modifier = Modifier.weight(1f)
+            ) {
+                Icon(imageVector = favIcon, contentDescription = null)
+            }
         }
 
 
@@ -169,7 +185,8 @@ fun FullScreenWordPreview(modifier: Modifier = Modifier) {
     UrbanDictTheme {
         FullScreenWord(
             word = UrbanWord(),
-            similarWordsInCriteria = listOf(UrbanWord(), UrbanWord())
+            similarWordsInCriteria = listOf(UrbanWord(), UrbanWord()),
+            isSaved = false
         )
     }
 }

@@ -1,4 +1,4 @@
-package io.kdbrian.urbandict.ui.composables
+package io.kdbrian.urbandict.features.composables
 
 import androidx.annotation.DrawableRes
 import androidx.compose.foundation.BorderStroke

@@ -1,4 +1,4 @@
-package io.kdbrian.urbandict.ui.composables
+package io.kdbrian.urbandict.features.composables
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box

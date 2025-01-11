@@ -15,5 +15,9 @@ sealed class Route {
     data class ViewWord(val wordId: String) : Route()
 
     @Serializable
-    data class Account(val userId: String) : Route()
+    data class Account(val userId: String? = null) : Route()
+
+    @Serializable
+    data class Saves(val userId: String? = null) : Route()
+
 }

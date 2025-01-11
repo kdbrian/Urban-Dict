@@ -8,10 +8,12 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.toRoute
 import io.kdbrian.urbandict.data.model.DemoWordDao
+import io.kdbrian.urbandict.data.model.UrbanWord
 import io.kdbrian.urbandict.features.auth.AuthEvent
 import io.kdbrian.urbandict.features.onboarding.OnBoardingScreen
 import io.kdbrian.urbandict.features.words.FullScreenWord
 import io.kdbrian.urbandict.features.words.GridWordFeed
+import java.util.UUID
 
 @Composable
 fun App(
@@ -20,6 +22,19 @@ fun App(
 
     val navController = rememberNavController()
     val words = DemoWordDao.getWords()
+    val savedWords = DemoWordDao.getSavedWords()
+    val viewWord: (String) -> Unit = { wordId ->
+        navController.navigate(Route.ViewWord(wordId))
+    }
+    val openProfile: () -> Unit = {
+        navController.navigate(Route.Account(UUID.randomUUID().toString()))
+    }
+    val openSaves: () -> Unit = {
+        navController.navigate(Route.Saves(UUID.randomUUID().toString()))
+    }
+    val onSaveWord: (UrbanWord) -> Unit = {
+        DemoWordDao.onSaveWord(it)
+    }
 
     NavHost(
         modifier = modifier.systemBarsPadding(),
@@ -60,23 +75,41 @@ fun App(
         }
 
         composable<Route.Home> {
-            GridWordFeed(words = words)
+            GridWordFeed(
+                words = words,
+                onOpenWord = { viewWord(it.wordId) },
+                onOpenProfile = openProfile,
+                onOpenSaves = openSaves
+            )
         }
 
         composable<Route.ViewWord> { backStackEntry ->
             val wordId = backStackEntry.toRoute<Route.ViewWord>()
             val word = words.find { it.wordId == wordId.wordId }
             //load words and related data
+            println("Word $wordId -> $word")
             if (word != null) {
                 FullScreenWord(
                     word = word,
-                    similarWordsInCriteria = listOf(),
+                    similarWordsInCriteria = words,
+                    onClose = { navController.popBackStack() },
+                    isSaved = savedWords.contains(word),
+                    onSave = onSaveWord
                 )
             }
         }
 
         composable<Route.Account> { backStackEntry ->
             val userId = backStackEntry.toRoute<Route.Account>()
+        }
+
+        composable<Route.Saves> { _->
+            GridWordFeed(
+                words = savedWords,
+                onOpenWord = { viewWord(it.wordId) },
+                onOpenProfile = openProfile,
+                onOpenSaves = openSaves
+            )
         }
 
     }

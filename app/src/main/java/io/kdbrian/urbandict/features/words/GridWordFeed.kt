@@ -27,20 +27,27 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import io.kdbrian.urbandict.LocalBackgroundColor
 import io.kdbrian.urbandict.data.model.UrbanWord
-import io.kdbrian.urbandict.ui.composables.WordCard
+import io.kdbrian.urbandict.features.composables.WordCard
 import io.kdbrian.urbandict.ui.theme.UrbanDictTheme
 import kotlin.random.Random
 
 @Composable
 fun GridWordFeed(
     modifier: Modifier = Modifier,
-    words: List<UrbanWord>
+    words: List<UrbanWord>,
+    onOpenWord: (UrbanWord) -> Unit = {},
+    onOpenProfile: () -> Unit = {},
+    onOpenSaves: () -> Unit = {}
 ) {
 
     WordFeed(
         modifier = modifier.background(color = LocalBackgroundColor.current),
         banner = {
-            WelcomeBanner(modifier = it, backgroundColor = LocalBackgroundColor.current)
+            WelcomeBanner(
+                modifier = it, backgroundColor = LocalBackgroundColor.current,
+                onOpenProfile = onOpenProfile,
+                onOpenSaves = onOpenSaves
+            )
         },
         body = {
             LazyVerticalGrid(columns = GridCells.Fixed(2)) {
@@ -70,7 +77,8 @@ fun GridWordFeed(
                                     Random.nextFloat(),
                                 )
                             )
-                            .padding(4.dp)
+                            .padding(4.dp),
+                        onSelect = onOpenWord
                     )
                 }
             }

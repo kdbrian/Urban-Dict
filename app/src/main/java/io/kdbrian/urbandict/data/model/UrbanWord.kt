@@ -16,13 +16,24 @@ data class UrbanWord(
 )
 
 object DemoWordDao {
-    fun getWords(): List<UrbanWord> {
-        return listOf(
-            UrbanWord(),
-            UrbanWord(),
-            UrbanWord(),
-            UrbanWord(),
-            UrbanWord(),
-        )
+    private val words = listOf(
+        UrbanWord(word = "Hello"),
+        UrbanWord(word = "World"),
+        UrbanWord(word = "Supa"),
+        UrbanWord(word = "Mario"),
+        UrbanWord(word = "Luigi"),
+    )
+
+    private val savedWords = mutableListOf<UrbanWord>()
+
+    fun getWords() = words
+    fun getSavedWords() = savedWords
+
+    fun onSaveWord(word: UrbanWord) {
+        if (savedWords.contains(word))
+            savedWords.remove(word)
+        else
+            savedWords.add(word)
     }
+
 }

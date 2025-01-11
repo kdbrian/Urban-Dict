@@ -21,6 +21,7 @@ import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.ThumbDown
 import androidx.compose.material.icons.filled.ThumbUp
 import androidx.compose.material.icons.outlined.Favorite
+import androidx.compose.material.icons.outlined.FavoriteBorder
 import androidx.compose.material.icons.outlined.ThumbDown
 import androidx.compose.material.icons.outlined.ThumbUp
 import androidx.compose.material.icons.rounded.Share
@@ -77,7 +78,7 @@ fun FullScreenWordPreview(
                 Icon(imageVector = Icons.AutoMirrored.Rounded.ArrowBack, contentDescription = null)
             }
 
-            val favIcon = if (isSaved) Icons.Filled.Favorite else Icons.Outlined.Favorite
+            val favIcon = if (isSaved) Icons.Filled.Favorite else Icons.Outlined.FavoriteBorder
 
             IconButton(
                 onClick = { onSave(word) },

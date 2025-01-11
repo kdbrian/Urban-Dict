@@ -2,6 +2,10 @@ package io.kdbrian.urbandict.ui.nav
 
 import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -10,8 +14,9 @@ import androidx.navigation.toRoute
 import io.kdbrian.urbandict.data.model.DemoWordDao
 import io.kdbrian.urbandict.data.model.UrbanWord
 import io.kdbrian.urbandict.features.auth.AuthEvent
+import io.kdbrian.urbandict.features.auth.MyProfile
 import io.kdbrian.urbandict.features.onboarding.OnBoardingScreen
-import io.kdbrian.urbandict.features.words.FullScreenWord
+import io.kdbrian.urbandict.features.words.FullScreenWordPreview
 import io.kdbrian.urbandict.features.words.GridWordFeed
 import io.kdbrian.urbandict.features.words.MySaves
 import java.util.UUID
@@ -23,7 +28,8 @@ fun App(
 
     val navController = rememberNavController()
     val words = DemoWordDao.getWords()
-    val savedWords = DemoWordDao.getSavedWords()
+    val savedWords by DemoWordDao.savedWords.observeAsState(emptyList())
+    val likedWords by DemoWordDao.likedWords.observeAsState(emptyList())
     val viewWord: (String) -> Unit = { wordId ->
         navController.navigate(Route.ViewWord(wordId))
     }
@@ -35,6 +41,10 @@ fun App(
     }
     val onSaveWord: (UrbanWord) -> Unit = {
         DemoWordDao.onSaveWord(it)
+    }
+
+    val onWordLikeChange: (UrbanWord) -> Unit = {
+        DemoWordDao.toggleLike(it)
     }
 
     NavHost(
@@ -89,20 +99,24 @@ fun App(
             val word = words.find { it.wordId == wordId.wordId }
             //load words and related data
             println("Word $wordId -> $word")
+            println("Word ${savedWords.contains(word)}")
             if (word != null) {
-                FullScreenWord(
+                val isLiked by remember { mutableStateOf(likedWords.contains(word)) }
+                FullScreenWordPreview(
                     word = word,
                     similarWordsInCriteria = words,
                     onClose = { navController.popBackStack() },
                     isSaved = savedWords.contains(word),
-                    onSave = onSaveWord
+                    onSave = onSaveWord,
+                    isLiked = isLiked,
+                    onLiked = onWordLikeChange
                 )
             }
         }
 
         composable<Route.Account> { backStackEntry ->
             val userId = backStackEntry.toRoute<Route.Account>()
-            MyProfile(userId)
+            MyProfile()
         }
 
         composable<Route.Saves> { _->

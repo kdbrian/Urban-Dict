@@ -67,8 +67,9 @@ fun MySaves(
 
         }
 
-
-
+        Spacer(modifier = Modifier.weight(1f))
+        Text(text = saves.joinToString(", ") { it.word })
+        Spacer(modifier = Modifier.weight(1f))
 
     }
 

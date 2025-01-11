@@ -1,6 +1,8 @@
 package io.kdbrian.urbandict.data.model
 
 import androidx.compose.ui.tooling.preview.datasource.LoremIpsum
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import kotlinx.serialization.Serializable
 import java.util.UUID
 
@@ -16,6 +18,15 @@ data class UrbanWord(
 )
 
 object DemoWordDao {
+
+    private val _savedWords = MutableLiveData<MutableList<UrbanWord>>(
+        mutableListOf()
+    )
+    val savedWords: LiveData<MutableList<UrbanWord>> = _savedWords
+
+    private val _likedWords = MutableLiveData<MutableList<UrbanWord>>()
+    val likedWords: LiveData<MutableList<UrbanWord>> = _likedWords
+
     private val words = listOf(
         UrbanWord(word = "Hello"),
         UrbanWord(word = "World"),
@@ -24,20 +35,24 @@ object DemoWordDao {
         UrbanWord(word = "Luigi"),
     )
 
-    private val savedWords = mutableListOf<UrbanWord>()
-
     fun getWords() = words
-    fun getSavedWords() = savedWords
 
     fun onSaveWord(word: UrbanWord) {
-        if (savedWords.contains(word))
-            savedWords.remove(word)
+        if (savedWords.value?.contains(word) == true)
+            savedWords.value?.remove(word)
         else
-            savedWords.add(word)
+            savedWords.value?.add(word)
     }
 
     fun clearSavedWords() {
-        savedWords.clear()
+        savedWords.value?.clear()
+    }
+
+    fun toggleLike(word: UrbanWord) {
+        if (likedWords.value?.contains(word) == true)
+            likedWords.value?.remove(word)
+        else
+            likedWords.value?.add(word)
     }
 
 }

@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
@@ -19,7 +20,7 @@ import androidx.compose.material.icons.automirrored.rounded.ArrowBack
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.ThumbDown
 import androidx.compose.material.icons.filled.ThumbUp
-import androidx.compose.material.icons.outlined.FavoriteBorder
+import androidx.compose.material.icons.outlined.Favorite
 import androidx.compose.material.icons.outlined.ThumbDown
 import androidx.compose.material.icons.outlined.ThumbUp
 import androidx.compose.material.icons.rounded.Share
@@ -27,10 +28,6 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.TextStyle
@@ -45,21 +42,21 @@ import io.kdbrian.urbandict.features.composables.WordCard
 import io.kdbrian.urbandict.ui.theme.UrbanDictTheme
 import io.kdbrian.urbandict.ui.theme.gambarino
 import io.kdbrian.urbandict.ui.theme.indianRed
-import io.kdbrian.urbandict.ui.theme.peachYellow
 import io.kdbrian.urbandict.util.Shapes
 
 @Composable
-fun FullScreenWord(
+fun FullScreenWordPreview(
     modifier: Modifier = Modifier,
     word: UrbanWord,
     similarWordsInCriteria: List<UrbanWord>,
     onClose: () -> Unit = {},
+    isLiked: Boolean,
+    onLiked: (UrbanWord) -> Unit = {},
     isSaved: Boolean,
     onSave: (UrbanWord) -> Unit = {}
 ){
 
     val verticalScrollState = rememberScrollState()
-    var isLiked by remember { mutableStateOf(false) }
     val thumbsUp = if (isLiked) Icons.Filled.ThumbUp else Icons.Outlined.ThumbUp
     val thumbsDown = if (isLiked) Icons.Outlined.ThumbDown else Icons.Filled.ThumbDown
 
@@ -72,19 +69,19 @@ fun FullScreenWord(
         verticalArrangement = Arrangement.spacedBy(6.dp)
     ) {
 
-        Row {
+        Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
             IconButton(
                 onClick = onClose,
-                modifier = Modifier.weight(1f)
+                modifier = Modifier
             ) {
                 Icon(imageVector = Icons.AutoMirrored.Rounded.ArrowBack, contentDescription = null)
             }
 
-            val favIcon = if (isSaved) Icons.Filled.Favorite else Icons.Filled.Favorite
+            val favIcon = if (isSaved) Icons.Filled.Favorite else Icons.Outlined.Favorite
 
             IconButton(
                 onClick = { onSave(word) },
-                modifier = Modifier.weight(1f)
+                modifier = Modifier
             ) {
                 Icon(imageVector = favIcon, contentDescription = null)
             }
@@ -144,7 +141,7 @@ fun FullScreenWord(
 
         Row(modifier = Modifier.align(Alignment.CenterHorizontally)) {
 
-            IconButton(onClick = {isLiked = true}) {
+            IconButton(onClick = { onLiked(word) }) {
                 Icon(
                     imageVector = thumbsUp,
                     contentDescription = null,
@@ -153,7 +150,7 @@ fun FullScreenWord(
 
             Spacer(Modifier.width(8.dp))
 
-            IconButton(onClick = { isLiked = false}) {
+            IconButton(onClick = { onLiked(word) }) {
                 Icon(
                     imageVector = thumbsDown,
                     contentDescription = null,
@@ -183,10 +180,10 @@ fun FullScreenWord(
 @Composable
 fun FullScreenWordPreview(modifier: Modifier = Modifier) {
     UrbanDictTheme {
-        FullScreenWord(
-            word = UrbanWord(),
-            similarWordsInCriteria = listOf(UrbanWord(), UrbanWord()),
-            isSaved = false
-        )
+//        FullScreenWordPreview(
+//            word = UrbanWord(),
+//            similarWordsInCriteria = listOf(UrbanWord(), UrbanWord()),
+//            isSaved = false
+//        )
     }
 }

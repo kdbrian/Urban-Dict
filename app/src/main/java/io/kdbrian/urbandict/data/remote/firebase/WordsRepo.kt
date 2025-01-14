@@ -4,6 +4,11 @@ import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import io.kdbrian.urbandict.data.model.UrbanWord
 import io.kdbrian.urbandict.domain.firebase.WordRepository
+import io.kdbrian.urbandict.presentation.util.Resource
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
 
 private const val wordCollection: String = "urban-words-test"
@@ -11,6 +16,30 @@ private const val wordCollection: String = "urban-words-test"
 class WordsRepo : WordRepository {
 
     private val wordsCollection = Firebase.firestore.collection(wordCollection)
+
+    override val liveWords: MutableSharedFlow<Resource<List<UrbanWord>>> =
+        MutableSharedFlow()
+
+    val scope = CoroutineScope(Dispatchers.IO)
+
+    override suspend fun observeWords() {
+
+        wordsCollection.addSnapshotListener { value, error ->
+            scope.launch {
+                println("got val -> ${value?.size()} err -> ${error?.message}")
+
+                if (value?.isEmpty == false) {
+                    val words = value.toObjects(UrbanWord::class.java)
+                    liveWords.emit(Resource.Success(words))
+                }
+
+                if (error != null) {
+                    liveWords.emit(Resource.Error(error.message.toString()))
+                }
+
+            }
+        }
+    }
 
     override suspend fun getWords(): Result<List<UrbanWord>> {
         return try {

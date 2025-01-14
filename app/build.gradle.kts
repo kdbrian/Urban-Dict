@@ -4,8 +4,6 @@ plugins {
     alias(libs.plugins.kotlin.compose)
 
     kotlin("plugin.serialization") version "2.1.0"
-    alias(libs.plugins.google.gms.google.services)
-
 }
 
 android {
@@ -31,6 +29,7 @@ android {
             )
         }
     }
+
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_11
         targetCompatibility = JavaVersion.VERSION_11
@@ -38,10 +37,10 @@ android {
     kotlinOptions {
         jvmTarget = "11"
     }
+
     buildFeatures {
         compose = true
         buildConfig = true
-
     }
 }
 
@@ -63,6 +62,21 @@ dependencies {
     androidTestImplementation(libs.androidx.ui.test.junit4)
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
+
+    //navigation
+    implementation(libs.androidx.navigation.compose)
+
+    //serialization
+    implementation(libs.kotlinx.serialization.json)
+
+    //constraint layout
+    implementation(libs.androidx.constraintlayout.compose)
+
+    //extended icons
+    implementation(libs.material.icons.extended)
+
+    //runtime livedata
+    implementation(libs.androidx.runtime.livedata)
 
     implementation(libs.kotlinx.serialization.json)
     implementation(libs.androidx.runtime.livedata)

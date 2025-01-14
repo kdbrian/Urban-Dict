@@ -1,6 +1,10 @@
 package io.kdbrian.urbandict.data.model
 
+import androidx.compose.ui.tooling.preview.datasource.LoremIpsum
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import kotlinx.serialization.Serializable
+import java.util.UUID
 
 @Serializable
 data class UrbanWord(

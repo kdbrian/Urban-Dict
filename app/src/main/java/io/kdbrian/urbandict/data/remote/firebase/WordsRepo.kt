@@ -6,7 +6,7 @@ import io.kdbrian.urbandict.data.model.UrbanWord
 import io.kdbrian.urbandict.domain.firebase.WordRepository
 import kotlinx.coroutines.tasks.await
 
-private const val wordCollection: String = "urban-words"
+private const val wordCollection: String = "urban-words-test"
 
 class WordsRepo : WordRepository {
 

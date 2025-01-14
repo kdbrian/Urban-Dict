@@ -1,7 +1,6 @@
 package io.kdbrian.urbandict.data.remote.firebase
 
-import com.google.firebase.firestore.ktx.firestore
-import com.google.firebase.ktx.Firebase
+import com.google.firebase.firestore.FirebaseFirestore
 import io.kdbrian.urbandict.data.model.UrbanWord
 import io.kdbrian.urbandict.domain.firebase.WordRepository
 import io.kdbrian.urbandict.presentation.util.Resource
@@ -15,12 +14,12 @@ private const val wordCollection: String = "urban-words-test"
 
 class WordsRepo : WordRepository {
 
-    private val wordsCollection = Firebase.firestore.collection(wordCollection)
+    private val wordsCollection = FirebaseFirestore.getInstance().collection(wordCollection)
 
     override val liveWords: MutableSharedFlow<Resource<List<UrbanWord>>> =
         MutableSharedFlow()
 
-    val scope = CoroutineScope(Dispatchers.IO)
+    private val scope = CoroutineScope(Dispatchers.IO)
 
     override suspend fun observeWords() {
 

@@ -43,28 +43,6 @@ fun VerticallyStackedWordCard(
             .padding(6.dp)
             .fillMaxWidth()
             .offset { IntOffset(offsetX.value.roundToInt(), 0) }
-            /*.pointerInput(Unit) {
-                detectHorizontalDragGestures(
-                    onDragStart = { dragAmount ->
-                        val newOffset = offsetX.value + dragAmount.x
-                        scope.launch {
-                            offsetX.snapTo(
-                                newOffset.coerceIn(
-                                    -screenWidthDp.toFloat(),
-                                    screenWidthDp.toFloat()
-                                )
-                            )
-                        }
-
-                    },
-                    onDragEnd = {
-                        scope.launch {
-                            offsetX.animateTo(0f)
-                        }
-                    },
-                    onHorizontalDrag = { TODO() }
-                )
-            } */
         ,
         shape = Shapes.rounded6Dp
     ) {

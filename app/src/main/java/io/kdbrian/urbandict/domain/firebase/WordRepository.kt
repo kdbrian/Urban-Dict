@@ -4,7 +4,7 @@ import io.kdbrian.urbandict.data.model.UrbanWord
 
 interface WordRepository {
     suspend fun getWords(): Result<List<UrbanWord>>
-    suspend fun addWords(): Result<UrbanWord>
+    suspend fun addWord(word: UrbanWord): Result<UrbanWord>
     suspend fun getSimilarWords(word: UrbanWord): Result<List<UrbanWord>>
     suspend fun toggleLike(word: UrbanWord): Result<UrbanWord>
 }

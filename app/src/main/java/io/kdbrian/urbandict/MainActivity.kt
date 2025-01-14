@@ -18,7 +18,6 @@ import io.kdbrian.urbandict.ui.theme.indianRed
 val LocalBackgroundColor = staticCompositionLocalOf { indianRed }
 
 class MainActivity : ComponentActivity() {
-    @OptIn(ExperimentalMaterial3Api::class)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -35,7 +34,9 @@ class MainActivity : ComponentActivity() {
                             key = "WordViewModel"
                         )
 
-                        App()
+                        App(
+                            wordsViewModel = wordsViewModel
+                        )
 
 
 

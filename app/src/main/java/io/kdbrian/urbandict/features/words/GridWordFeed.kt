@@ -10,6 +10,7 @@ import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -28,16 +29,17 @@ import androidx.compose.ui.unit.sp
 import io.kdbrian.urbandict.LocalBackgroundColor
 import io.kdbrian.urbandict.data.model.UrbanWord
 import io.kdbrian.urbandict.features.composables.WordCard
+import io.kdbrian.urbandict.presentation.util.Resource
 import io.kdbrian.urbandict.ui.theme.UrbanDictTheme
 import kotlin.random.Random
 
 @Composable
 fun GridWordFeed(
     modifier: Modifier = Modifier,
-    words: List<UrbanWord>,
+    words: Resource<List<UrbanWord>>,
     onOpenWord: (UrbanWord) -> Unit = {},
     onOpenProfile: () -> Unit = {},
-    onOpenSaves: () -> Unit = {}
+    onOpenSaves: () -> Unit = {},
 ) {
 
     WordFeed(
@@ -50,36 +52,44 @@ fun GridWordFeed(
             )
         },
         body = {
-            LazyVerticalGrid(columns = GridCells.Fixed(2)) {
-                items(words) { word ->
-                    WordCard(
-                        word = word,
-                        divider = {
+            when (words) {
+                is Resource.Error -> Text(text = words.message.toString())
+                is Resource.Loading -> CircularProgressIndicator()
+                is Resource.Success -> {
+                    words.data?.let { wordList ->
+                        LazyVerticalGrid(columns = GridCells.Fixed(2)) {
+                            items(wordList) { word ->
+                                WordCard(
+                                    word = word,
+                                    divider = {
 
-                            val dividerColor = Color(
-                                Random.nextFloat(),
-                                Random.nextFloat(),
-                                Random.nextFloat(),
-                            )
+                                        val dividerColor = Color(
+                                            Random.nextFloat(),
+                                            Random.nextFloat(),
+                                            Random.nextFloat(),
+                                        )
 
-                            DividerWithTextInMiddle(
-                                dividerColor = dividerColor,
-                                text = "Trending"
-                            )
-                        },
-                        modifier = Modifier
-                            .padding(6.dp)
-                            .background(
-                                shape = RoundedCornerShape(12.dp),
-                                color = Color(
-                                    Random.nextFloat(),
-                                    Random.nextFloat(),
-                                    Random.nextFloat(),
+                                        DividerWithTextInMiddle(
+                                            dividerColor = dividerColor,
+                                            text = "Trending"
+                                        )
+                                    },
+                                    modifier = Modifier
+                                        .padding(6.dp)
+                                        .background(
+                                            shape = RoundedCornerShape(12.dp),
+                                            color = Color(
+                                                Random.nextFloat(),
+                                                Random.nextFloat(),
+                                                Random.nextFloat(),
+                                            )
+                                        )
+                                        .padding(4.dp),
+                                    onSelect = onOpenWord
                                 )
-                            )
-                            .padding(4.dp),
-                        onSelect = onOpenWord
-                    )
+                            }
+                        }
+                    }
                 }
             }
             Spacer(modifier = Modifier.height(70.dp))

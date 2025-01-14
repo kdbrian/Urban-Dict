@@ -2,6 +2,7 @@ package io.kdbrian.urbandict.ui.nav
 
 import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateOf
@@ -19,17 +20,20 @@ import io.kdbrian.urbandict.features.onboarding.OnBoardingScreen
 import io.kdbrian.urbandict.features.words.FullScreenWordPreview
 import io.kdbrian.urbandict.features.words.GridWordFeed
 import io.kdbrian.urbandict.features.words.MySaves
+import io.kdbrian.urbandict.presentation.util.Resource
+import io.kdbrian.urbandict.presentation.viewmodel.WordViewModel
 import java.util.UUID
 
 @Composable
 fun App(
     modifier: Modifier = Modifier,
+    wordsViewModel : WordViewModel
 ) {
 
+    val allWords = wordsViewModel.words.collectAsState(initial = Resource.Loading())
+    val liveWords = wordsViewModel.livewords.collectAsState(initial = Resource.Loading())
+
     val navController = rememberNavController()
-    val words = DemoWordDao.getWords()
-    val savedWords by DemoWordDao.savedWords.observeAsState(emptyList())
-    val likedWords by DemoWordDao.likedWords.observeAsState(emptyList())
     val viewWord: (String) -> Unit = { wordId ->
         navController.navigate(Route.ViewWord(wordId))
     }
@@ -40,11 +44,9 @@ fun App(
         navController.navigate(Route.Saves(UUID.randomUUID().toString()))
     }
     val onSaveWord: (UrbanWord) -> Unit = {
-        DemoWordDao.onSaveWord(it)
     }
 
     val onWordLikeChange: (UrbanWord) -> Unit = {
-        DemoWordDao.toggleLike(it)
     }
 
     NavHost(
